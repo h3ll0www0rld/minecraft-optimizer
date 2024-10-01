@@ -12,4 +12,5 @@
 
 ## 高级用法
 如果你想要使用自己的模组列表，那么你可以通过修改`ModList.yaml`的内容来实现<br>
-`ModList.yaml`中，`loader`对应你的模组加载器，`mods`为你的模组列表
+`ModList.yaml`中，`loader`对应你的模组加载器，`mods`为你的模组列表<br>
+其中，`mods`下面的内容为你要添加的模组对应的`ID`，可以通过在模组页面点击`Copy ID`获取
