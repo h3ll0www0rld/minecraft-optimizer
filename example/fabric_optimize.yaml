@@ -1,0 +1,46 @@
+loader: fabric
+mods:
+  - name: Apple Skin
+    type: Modrinth
+    ID: EsAfCjCV
+  - name: Sodium
+    type: Modrinth
+    ID: AANobbMI
+  - name: Ferrite Core
+    type: Modrinth
+    ID: uXXizFIs
+  - name: Dynamic FPS
+    type: Modrinth
+    ID: LQ3K71Q1
+  - name: Entity Culling
+    type: Modrinth
+    ID: NNAgCjsB
+  - name: Iris
+    type: Modrinth
+    ID: YL57xq9U
+  - name: Language Reload
+    type: Modrinth
+    ID: uLbm7CG6
+  - name: Lithium
+    type: Modrinth
+    ID: gvQqBUqZ
+  - name: Mod Menu
+    type: Modrinth
+    ID: mOgUt4GM
+  - name: Reese's Sodium Options
+    type: Modrinth
+    ID: Bh37bMuy
+  - name: Sodium Extra
+    type: Modrinth
+    ID: PtjYWJkn
+  - name: Starlight(fabric)
+    type: Modrinth
+    ID: H8CaAYZC
+  - name: Zoomify
+    type: Modrinth
+    ID: w7ThoJFB
+
+  # Lib
+  - name: YetAnotherConfigLib
+    type: Modrinth
+    ID: 1eAoo2KR
