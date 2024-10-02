@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -17,3 +17,10 @@ jobs:
           pip install -r requirements.txt
       - name: Build the program
         run: pyinstaller -F -w main.py
+      - name: Rename the artifact
+        run : Rename-Item -Path "main.exe" -NewName "mo.exe"
+      - name: Upload the artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mo
+          path: mo.exe
