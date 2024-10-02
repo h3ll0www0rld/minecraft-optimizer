@@ -10,6 +10,15 @@ class UnCompatibleError(Exception):
     def __init__(self, message):
         self.message = message
 
+def groupByTypeAndID(modList:list[dict]) -> list:
+    _modList = []
+    for mod in modList:
+        for _mod in _modList:
+            if mod["type"] == _mod["type"] and mod["ID"] == _mod["ID"]:
+                break
+        _modList.append(mod)
+    return _modList
+
 def getModrinthDownloadUrl(modID:str,mcVersion: str,loader:str) -> None:
     _response = json.loads(requests.get(f"https://api.modrinth.com/v2/project/{modID}/version").text)
     for version in _response:
@@ -39,8 +48,23 @@ def getCurseForgeDownloadUrl(modID:str,mcVersion:str,loader:str) -> str:
     # 由于CurseForge的API调用需要申请API Key所以暂时不考虑实现
     raise NotImplementedError
 
+def getImports(onelineConfigUrlList:list[str]):
+    if onelineConfigUrlList == []:
+        return None
+    _imports = []
+    for url in onelineConfigUrlList:
+        _response = requests.get(url).text
+        config = yaml.safe_load(_response)
+        if "imports" in config.keys():
+            _imports.extend(config["imports"])
+        modList.extend(config["mods"])
+    return getImports(_imports)
+
+        
+
+
 def main():
-    global downloadList
+    global modList, downloadList
     versionIsolation = questionary.select("版本隔离",choices=["已开启","未开启"]).ask()
 
     mcVersion = questionary.select("请选择你的MC版本",choices=os.listdir(".minecraft/versions")).ask()
@@ -50,12 +74,19 @@ def main():
         config = yaml.safe_load(f)
     
     loader = config["loader"]
-    mods = config["mods"]
+
+    modList = config["mods"]
+
+    if "imports" in config.keys():
+        print(f"发现{len(config['imports'])}个在线配置文件，导入中")
+        getImports(config["imports"])
     
+    modList = groupByTypeAndID(modList)
+
     downloadList = []
     
     with ThreadPoolExecutor(max_workers=4) as executor:
-        futureToMod = {executor.submit(getModrinthDownloadUrl, mod["ID"],mcVersion,loader): mod for mod in mods}
+        futureToMod = {executor.submit(getModrinthDownloadUrl, mod["ID"],mcVersion,loader): mod for mod in modList}
         for future in as_completed(futureToMod):
             mod = futureToMod[future]
             try:
@@ -63,7 +94,7 @@ def main():
                 print(f"获取{mod['name']}下载链接成功")
             except Exception as exc:
                 print(f"获取{mod['name']}下载链接错误: {exc}")
-    print(f"成功获取{len(downloadList)}个模组的下载地址，共{len(mods)}个模组")
+    print(f"成功获取{len(downloadList)}个模组的下载地址，共{len(modList)}个模组")
     
     with ThreadPoolExecutor(max_workers=4) as executor:
         futureToUrl = {executor.submit(downloadFile, url, modsFolder): url for url in downloadList}

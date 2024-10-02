@@ -2,3 +2,6 @@ pyyaml
 requests
 questionary
 tqdm
+
+# build
+pyinstaller

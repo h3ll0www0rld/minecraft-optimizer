@@ -1,2 +1,9 @@
+loader: fabric
+
 imports:
-  - 
+  - https://raw.githubusercontent.com/h3ll0www0rld/minecraft-optimizer/refs/heads/main/example/fabric_optimize.yaml
+
+mods:
+  - name: Durability Viewer
+    type: Modrinth
+    ID: LTM1f0yY
